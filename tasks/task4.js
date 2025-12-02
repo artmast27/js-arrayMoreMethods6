@@ -1,31 +1,32 @@
-// Маємо масив об'єктів, де кожен об'єкт представляє автомобіль з інформацією про її бренд, модель і витрату палива. 
-// Завдання — перевірити, чи всі машини в масиві мають витрату палива менше 6 л/100 км. 
-// Якщо це так, то фільтруємо машини по бренду і повертаємо ті, що найбільш економні.
+// Маємо масив об'єктів, де кожен об'єкт представляє автомобіль з брендом,
+// моделлю та витратою палива (fuelConsumption).
+// Завдання – перевірити, чи всі машини в масиві мають витрату палива
+// МЕНШЕ 6 л/100 км. Якщо ні — повертаємо порожній масив.
+// Якщо так – фільтруємо машини по бренду і повертаємо ті, що
+// мають найменшу витрату, відсортовані за fuelConsumption за зростанням.
 
 function getMostFuelEfficientCars(cars, brand) {
-  // Ваш код
+  if (!Array.isArray(cars) || cars.length === 0) {
+    return [];
+  }
+
+  // Перевіряємо, що ВСІ машини мають витрату МЕНШЕ 6 л/100 км
+  const allBelowSix = cars.every(
+    (car) => typeof car.fuelConsumption === 'number' && car.fuelConsumption < 6
+  );
+
+  if (!allBelowSix) {
+    // Якщо хоча б одна машина має витрату >= 6, повертаємо порожній масив
+    return [];
+  }
+
+  // Фільтруємо машини по бренду
+  const filteredByBrand = cars.filter((car) => car.brand === brand);
+
+  // Сортуємо за витратою палива по зростанню
+  filteredByBrand.sort((a, b) => a.fuelConsumption - b.fuelConsumption);
+
+  return filteredByBrand;
 }
 
-// Приклад використання:
-const cars = [
-  { brand: 'Toyota', model: 'Corolla', fuelConsumption: 5.2 },
-  { brand: 'Honda', model: 'Civic', fuelConsumption: 5.9 },
-  { brand: 'Toyota', model: 'Camry', fuelConsumption: 5.5 },
-  { brand: 'Ford', model: 'Focus', fuelConsumption: 6.1 },
-  { brand: 'Honda', model: 'Accord', fuelConsumption: 5.8 },
-  { brand: 'Audi', model: 'A3', fuelConsumption: 5.4 },  
-  { brand: 'Audi', model: 'Q5', fuelConsumption: 5.7 },  
-  { brand: 'Dodge', model: 'Charger', fuelConsumption: 5.8 }, 
-  { brand: 'Dodge', model: 'Durango', fuelConsumption: 5.6 }, 
-];
-
-console.log(getMostFuelEfficientCars(cars, 'Toyota')); 
-
-console.log(getMostFuelEfficientCars(cars, 'Honda')); 
-
-console.log(getMostFuelEfficientCars(cars, 'Audi'));  
-
-console.log(getMostFuelEfficientCars(cars, 'Dodge'));  
-
-console.log(getMostFuelEfficientCars(cars, 'Ford'));  
 module.exports = getMostFuelEfficientCars;
